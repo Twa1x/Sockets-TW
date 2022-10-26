@@ -9,6 +9,7 @@ public class ServerThread extends Thread {
     private ObjectInputStream in = null;
     private ObjectOutputStream out = null;
 
+    private static String previousRequest = " ";
     public ServerThread(Socket socket) {
         try {
             //For receiving and sending data
@@ -20,25 +21,20 @@ public class ServerThread extends Thread {
     }
 
     public void run() {
-        try {
-            Packet receivedPacket = (Packet) this.in.readObject();
-            System.out.println("Received: " + receivedPacket.message);
-            execute(receivedPacket.message);
+        while (true) {
+            try {
+                Packet receivedPacket = (Packet) this.in.readObject();
+                System.out.println("Received: " + receivedPacket.message);
+                execute(receivedPacket.message);
 
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void execute(String message) {
-<<<<<<< Updated upstream
-        Packet packet = switch (message) {
-            case "Hello" -> new Packet("Hello There");
-            case "How are you?" -> new Packet("I'm fine");
-            case "Bye" -> new Packet("Bye");
-            default -> new Packet("Can't understand you :/");
-        };
-=======
+
         Packet packet = new Packet("Nothing");
 
         switch (previousRequest) {
@@ -97,7 +93,6 @@ public class ServerThread extends Thread {
                 break;
             }
         }
->>>>>>> Stashed changes
 
         try {
             this.out.writeObject(packet);
