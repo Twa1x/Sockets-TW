@@ -6,6 +6,7 @@ public class Server {
     public static final int PORT = 6543;
 
     public void start() {
+
         new Thread(() -> {
             try {
                 ServerSocket serverSocket = new ServerSocket(PORT);

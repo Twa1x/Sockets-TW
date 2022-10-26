@@ -7,16 +7,20 @@ public class Client {
     public static final int PORT = 6543;
 
     public void start() throws Exception {
-        System.out.println("Say something and the message will be sent to the server: ");
+        System.out.println("Welcome to our application, please choose an option: ");
+        System.out.println("Login");
+        System.out.println("Forgot your password");
+        System.out.println("Sign up");
         Socket socket = null;
 
+        socket = new Socket("localhost", PORT);
+
+        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
         //For receiving and sending data
         boolean isClose = false;
         while (!isClose) {
-            socket = new Socket("localhost", PORT);
 
-            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
             Scanner scanner = new Scanner(System.in);
             String message = scanner.nextLine();
@@ -27,9 +31,34 @@ public class Client {
 
             Packet packet = new Packet(message);
             outputStream.writeObject(packet);
-
             Packet recivePacket = (Packet) inputStream.readObject();
             System.out.println(recivePacket.message);
+            switch (recivePacket.message)
+            {
+                case "Logged in succesfully!":
+                {
+                    System.out.println("Exit");
+                    break;
+                }
+                case "Wrong credentials!":
+                {
+
+                    System.out.println("Login");
+                    System.out.println("Forgot your password");
+                    System.out.println("Sign up");
+                    break;
+                }
+                case "Start":
+                {
+                    System.out.println("Login");
+                    System.out.println("Forgot your password");
+                    System.out.println("Sign up");
+                    break;
+                }
+                default:
+                    break;
+            }
+
         }
         socket.close();
     }

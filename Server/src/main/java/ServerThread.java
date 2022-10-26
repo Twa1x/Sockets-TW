@@ -2,15 +2,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
+import java.sql.*;
 
 
 public class ServerThread extends Thread {
     private ObjectInputStream in = null;
     private ObjectOutputStream out = null;
 
+    private  static DbFunctions dataBase  = new DbFunctions();
+    private static Connection connection;
     private static String previousRequest = " ";
     public ServerThread(Socket socket) {
+
+        connection = dataBase.connectToDb("LoginSys","postgres","1q2w3e");
         try {
             //For receiving and sending data
             this.in = new ObjectInputStream(socket.getInputStream());
@@ -35,11 +39,13 @@ public class ServerThread extends Thread {
 
     private void execute(String message) {
 
-        Packet packet = new Packet("Nothing");
+        Packet packet = new Packet("Start");
 
         switch (previousRequest) {
             case "Login": {
-                if(message.equals("Alex")) {
+                //
+                if(dataBase.search_by_name(connection,"user","username", message) == true)
+                 {
                     packet = new Packet("Insert your password");
                     previousRequest = "Password";
                 }
@@ -52,7 +58,9 @@ public class ServerThread extends Thread {
                 break;
             }
             case "Password": {
-                if(message.equals("Parola")){
+                //
+                if(dataBase.search_by_name(connection,"user","password", message) == true)
+                {
                     packet = new Packet("Logged in succesfully!");
                     previousRequest = "Logged";
                 }
@@ -79,7 +87,7 @@ public class ServerThread extends Thread {
                 break;
             }
             case "Hello":{
-                packet= new Packet("Sall!");
+                packet= new Packet("Sall fra!");
                 previousRequest = message;
                 break;
 
@@ -87,6 +95,10 @@ public class ServerThread extends Thread {
             case "LoginFailed":
             {
                 packet = new Packet("Wrong credentials!");
+                break;
+            }
+            case "Exit": {
+                packet = new Packet("Login\nForgot your password\nSign up\n");
                 break;
             }
             default : {
