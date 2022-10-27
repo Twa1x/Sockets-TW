@@ -1,3 +1,5 @@
+import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.pbkdf2.Pack;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,6 +13,8 @@ public class ServerThread extends Thread {
 
     private  static DbFunctions dataBase  = new DbFunctions();
     private static Connection connection;
+
+    private static  User user = new User();
     private static String previousRequest = " ";
     public ServerThread(Socket socket) {
 
@@ -73,6 +77,24 @@ public class ServerThread extends Thread {
 
                 break;
             }
+            case "SignUp":
+            {
+                packet = new Packet("Please set your password:");
+                previousRequest="SignUpQuestion";
+                break;
+            }
+            case "SignUpQuestion":
+            {
+                packet = new Packet("What's your first dog name?");
+                previousRequest = "SignUpAnswer";
+                break;
+            }
+            case "SignUpAnswer":
+            {
+                packet = new Packet("Sucessfully registred!");
+                break;
+            }
+
             default:
                 break;
         }
@@ -99,6 +121,11 @@ public class ServerThread extends Thread {
             }
             case "Exit": {
                 packet = new Packet("Login\nForgot your password\nSign up\n");
+                break;
+            }
+            case "SignUp": {
+                packet = new Packet("Please set your username: ");
+                previousRequest=message;
                 break;
             }
             default : {

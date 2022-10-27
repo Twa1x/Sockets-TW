@@ -38,4 +38,17 @@ public class DbFunctions {
 
         return false;
     }
+    public void insert_user(Connection connection, String tableName, User user)
+    {
+        Statement statement;
+        try{
+            String query = String.format("INSERT INTO public.\"%s\"(username, password, question, answer) " +
+                    "VALUES('%s','%s','%s','%s')", tableName, user.getUsername(), user.getPassword(), user.getQuestion(), user.getAnswer());
+            statement = connection.createStatement();
+            statement.executeQuery(query);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
 }
