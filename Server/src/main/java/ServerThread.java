@@ -137,7 +137,8 @@ public class ServerThread extends Thread {
             }
             case "New Password":
             {
-
+                dataBase.updatePassword(connection,userName,message);
+                packet = new Packet("Password changed sucessfully");
                 break;
             }
 

@@ -97,7 +97,19 @@ public class DbFunctions {
 
     public  void updatePassword(Connection connection, String userName, String password)
     {
+        Statement statement;
 
+        try{
+            String query = String.format
+                    ("UPDATE public.\"user\" SET  password='%s' WHERE  username='%s'", password,userName);
+            statement = connection.createStatement();
+           statement.executeQuery(query);
+
+
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
     }
 
 

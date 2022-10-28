@@ -10,7 +10,7 @@ public class Client {
         System.out.println("Welcome to our application, please choose an option: ");
         System.out.println("Login");
         System.out.println("Forgot your password");
-        System.out.println("Sign up");
+        System.out.println("SignUp");
         Socket socket = null;
 
         socket = new Socket("localhost", PORT);
@@ -44,7 +44,14 @@ public class Client {
                 {
                     System.out.println("Login");
                     System.out.println("Forgot your password");
-                    System.out.println("Sign up");
+                    System.out.println("SignUp");
+                    break;
+                }
+                case "Password changed sucessfully":
+                {
+                    System.out.println("Login");
+                    System.out.println("Forgot your password");
+                    System.out.println("SignUp");
                     break;
                 }
                 case "Wrong credentials!":
@@ -52,14 +59,14 @@ public class Client {
 
                     System.out.println("Login");
                     System.out.println("Forgot your password");
-                    System.out.println("Sign up");
+                    System.out.println("SignUp");
                     break;
                 }
                 case "Start":
                 {
                     System.out.println("Login");
                     System.out.println("Forgot your password");
-                    System.out.println("Sign up");
+                    System.out.println("SignUp");
                     break;
                 }
                 default:
