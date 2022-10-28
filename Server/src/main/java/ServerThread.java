@@ -113,6 +113,33 @@ public class ServerThread extends Thread {
                 dataBase.insertUser(connection,"user", user);
                 break;
             }
+            case "Forgot your password":
+            {
+                userName = message;
+                String tempString = dataBase.getColumn(connection,userName, "question");
+                if( tempString.equals(""))
+                    packet = new Packet("Wrong credentials!");
+                else
+                    packet = new Packet(dataBase.getColumn(connection,userName, "question"));
+                previousRequest =  "Validating Answer";
+                break;
+            }
+            case "Validating Answer":
+            {
+                if(message.equals(dataBase.getColumn(connection,userName,"answer")))
+                {packet = new Packet("Insert your new password");
+                    previousRequest = "New Password";
+                }
+
+                else
+                    packet = new Packet("Wrong credentials!");
+                break;
+            }
+            case "New Password":
+            {
+
+                break;
+            }
 
 
             default:
@@ -146,6 +173,12 @@ public class ServerThread extends Thread {
             case "SignUp": {
                 packet = new Packet("Please set your username: ");
                 previousRequest=message;
+                break;
+            }
+            case "Forgot your password":
+            {
+                packet = new Packet("Insert your username");
+                previousRequest =  "Forgot your password";
                 break;
             }
             default : {

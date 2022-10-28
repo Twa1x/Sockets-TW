@@ -1,4 +1,5 @@
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 
 public class DbFunctions {
@@ -70,5 +71,36 @@ public class DbFunctions {
             System.out.println(e);
         }
     }
+
+    public String getColumn(Connection connection,  String userName, String column)
+    {
+        String string = "";
+        Statement statement;
+        ResultSet resultSet;
+        try{
+            String query = String.format
+                    ("select username, %s from public.\"user\" where username = '%s'",column, userName);
+            statement = connection.createStatement();
+            resultSet=statement.executeQuery(query);
+            while(  resultSet.next()){
+                if(resultSet.getString("username").equals(userName))
+                    string = resultSet.getString(column);
+            }
+
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
+        return string;
+    }
+
+    public  void updatePassword(Connection connection, String userName, String password)
+    {
+
+    }
+
+
+
 
 }
