@@ -89,9 +89,16 @@ public class ServerThread extends Thread {
             }
             case "SignUp":
             {
+                if(dataBase.searchByName(connection,"user","username", message) == true)
+                {
+                    packet = new Packet("This username is not available! \nPlease insert another one: ");
+
+                }
+                else
+                {
                 user.setUsername(message);
                 packet = new Packet("Please set your password:");
-                previousRequest="SignUpQuestion";
+                previousRequest="SignUpQuestion";}
                 break;
             }
             case "SignUpQuestion":
@@ -137,8 +144,9 @@ public class ServerThread extends Thread {
             }
             case "New Password":
             {
-                dataBase.updatePassword(connection,userName,message);
+                dataBase.updatePassword(connection,userName, message);
                 packet = new Packet("Password changed sucessfully");
+                previousRequest="" ;
                 break;
             }
 
