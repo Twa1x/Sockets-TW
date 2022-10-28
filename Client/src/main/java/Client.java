@@ -40,6 +40,13 @@ public class Client {
                     System.out.println("Exit");
                     break;
                 }
+                case "Sucessfully registred!":
+                {
+                    System.out.println("Login");
+                    System.out.println("Forgot your password");
+                    System.out.println("Sign up");
+                    break;
+                }
                 case "Wrong credentials!":
                 {
 

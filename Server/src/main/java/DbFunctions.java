@@ -38,6 +38,26 @@ public class DbFunctions {
 
         return false;
     }
+
+    public  boolean search_by_password(Connection connection, String tableName,String field, String password, String userName){
+        Statement statement;
+        ResultSet resultSet = null ;
+        try {
+            String query = String.format("select username, password from public.\"%s\" where %s = '%s'", tableName,field, password);
+            statement = connection.createStatement();
+            resultSet=statement.executeQuery(query);
+          while(  resultSet.next()){
+            if(resultSet.getString("username").equals( userName) && resultSet.getString("password").equals(password))
+                return  true;
+          }
+            return false;
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return false;
+    }
     public void insert_user(Connection connection, String tableName, User user)
     {
         Statement statement;

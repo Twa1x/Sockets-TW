@@ -12,6 +12,8 @@ public class ServerThread extends Thread {
     private ObjectOutputStream out = null;
 
     private  static DbFunctions dataBase  = new DbFunctions();
+
+    private  static String userName = "";
     private static Connection connection;
 
     private static  User user = new User();
@@ -46,10 +48,17 @@ public class ServerThread extends Thread {
         Packet packet = new Packet("Start");
 
         switch (previousRequest) {
+            case "Start" :
+            {
+                packet = new Packet("Start");
+                break;
+            }
             case "Login": {
                 //
+
                 if(dataBase.search_by_name(connection,"user","username", message) == true)
-                 {
+                {
+                    userName = message;
                     packet = new Packet("Insert your password");
                     previousRequest = "Password";
                 }
@@ -63,7 +72,7 @@ public class ServerThread extends Thread {
             }
             case "Password": {
                 //
-                if(dataBase.search_by_name(connection,"user","password", message) == true)
+                if(dataBase.search_by_password(connection,"user","password", message, userName) == true)
                 {
                     packet = new Packet("Logged in succesfully!");
                     previousRequest = "Logged";
@@ -79,21 +88,29 @@ public class ServerThread extends Thread {
             }
             case "SignUp":
             {
+                user.setUsername(message);
                 packet = new Packet("Please set your password:");
                 previousRequest="SignUpQuestion";
                 break;
             }
             case "SignUpQuestion":
             {
-                packet = new Packet("What's your first dog name?");
+                user.setPassword(message);
+                packet = new Packet("What is your first dog name?");
                 previousRequest = "SignUpAnswer";
                 break;
             }
             case "SignUpAnswer":
             {
+
+                user.setQuestion("What is your first dog name?");
+                user.setAnswer(message);
                 packet = new Packet("Sucessfully registred!");
+                previousRequest = "Start";
+                dataBase.insert_user(connection,"user", user);
                 break;
             }
+
 
             default:
                 break;
