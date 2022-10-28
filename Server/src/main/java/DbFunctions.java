@@ -21,7 +21,7 @@ public class DbFunctions {
     return connection;
     }
 
-    public  boolean search_by_name(Connection connection, String tableName,String field, String name){
+    public  boolean searchByName(Connection connection, String tableName,String field, String name){
         Statement statement;
         ResultSet resultSet = null ;
         try {
@@ -39,7 +39,7 @@ public class DbFunctions {
         return false;
     }
 
-    public  boolean search_by_password(Connection connection, String tableName,String field, String password, String userName){
+    public  boolean searchByPassword(Connection connection, String tableName,String field, String password, String userName){
         Statement statement;
         ResultSet resultSet = null ;
         try {
@@ -58,7 +58,7 @@ public class DbFunctions {
 
         return false;
     }
-    public void insert_user(Connection connection, String tableName, User user)
+    public void insertUser(Connection connection, String tableName, User user)
     {
         Statement statement;
         try{

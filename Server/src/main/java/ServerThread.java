@@ -13,6 +13,7 @@ public class ServerThread extends Thread {
 
     private  static DbFunctions dataBase  = new DbFunctions();
 
+    private static Questions questions = new Questions();
     private  static String userName = "";
     private static Connection connection;
 
@@ -56,7 +57,7 @@ public class ServerThread extends Thread {
             case "Login": {
                 //
 
-                if(dataBase.search_by_name(connection,"user","username", message) == true)
+                if(dataBase.searchByName(connection,"user","username", message) == true)
                 {
                     userName = message;
                     packet = new Packet("Insert your password");
@@ -72,7 +73,7 @@ public class ServerThread extends Thread {
             }
             case "Password": {
                 //
-                if(dataBase.search_by_password(connection,"user","password", message, userName) == true)
+                if(dataBase.searchByPassword(connection,"user","password", message, userName) == true)
                 {
                     packet = new Packet("Logged in succesfully!");
                     previousRequest = "Logged";
@@ -95,19 +96,21 @@ public class ServerThread extends Thread {
             }
             case "SignUpQuestion":
             {
+                String question = questions.getRandomQuestion();
                 user.setPassword(message);
-                packet = new Packet("What is your first dog name?");
+                packet = new Packet(question);
+                user.setQuestion(question);
                 previousRequest = "SignUpAnswer";
                 break;
             }
             case "SignUpAnswer":
             {
 
-                user.setQuestion("What is your first dog name?");
+
                 user.setAnswer(message);
                 packet = new Packet("Sucessfully registred!");
                 previousRequest = "Start";
-                dataBase.insert_user(connection,"user", user);
+                dataBase.insertUser(connection,"user", user);
                 break;
             }
 
