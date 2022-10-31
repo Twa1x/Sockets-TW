@@ -89,6 +89,13 @@ public class ServerThread extends Thread {
             }
             case "SignUp":
             {
+
+                if (message.length()<=5)
+                {
+                    packet= new Packet("The username has to be longer than 5 characters!\nPlease insert another username: ");
+                    previousRequest = "SignUp";
+                }
+                else{
                 if(dataBase.searchByName(connection,"user","username", message) == true)
                 {
                     packet = new Packet("This username is not available! \nPlease insert another one: ");
@@ -98,16 +105,24 @@ public class ServerThread extends Thread {
                 {
                 user.setUsername(message);
                 packet = new Packet("Please set your password:");
-                previousRequest="SignUpQuestion";}
+                    previousRequest="SignUpQuestion";}
+                }
                 break;
             }
             case "SignUpQuestion":
             {
+                if (message.length()<=5)
+                {
+                    packet= new Packet("The password has to be longer than 5 characters!\nPlease insert another password: ");
+                    previousRequest = "SignUpQuestion";
+                }
+                else{
                 String question = questions.getRandomQuestion();
                 user.setPassword(message);
                 packet = new Packet(question);
                 user.setQuestion(question);
                 previousRequest = "SignUpAnswer";
+                }
                 break;
             }
             case "SignUpAnswer":
@@ -144,9 +159,16 @@ public class ServerThread extends Thread {
             }
             case "New Password":
             {
+                if (message.length()<=5)
+                {
+                    packet= new Packet("The password has to be longer than 5 characters!\nPlease insert another password: ");
+                    previousRequest = "New Password";
+                }else
+                {
                 dataBase.updatePassword(connection,userName, message);
                 packet = new Packet("Password changed sucessfully");
-                previousRequest="" ;
+                    previousRequest="";
+                }
                 break;
             }
 
